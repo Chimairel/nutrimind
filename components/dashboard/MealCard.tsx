@@ -1,3 +1,4 @@
+"use client";
 import { Meal } from '@/types';
 import MacroPills from './MacroPills';
 import RecipeModal from '@/components/recipe/RecipeModal';

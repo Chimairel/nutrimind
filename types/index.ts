@@ -69,3 +69,25 @@ export interface GroceryList {
   weekOf: string;
   items: GroceryItem[];
 }
+
+// Represents a Meal row from Prisma DB (different shape from AI-generated Meal)
+export interface DbMeal {
+  id: string;
+  userId: string;
+  name: string;
+  description: string | null;
+  imageUrl: string | null;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number | null;
+  sodium: number | null;
+  cuisine: string | null;
+  mealCategory: string | null;
+  servingSize: string | null;
+  servingGrams: number | null;
+  isAiGenerated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

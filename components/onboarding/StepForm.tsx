@@ -28,11 +28,21 @@ export default function StepForm() {
     sex: 'Male',
     height: '',
     weight: '',
+    activityLevel: 'Sedentary',
     region: 'Metro Manila (NCR)',
     restrictions: ''
   });
 
   const handleNext = () => {
+    setError(null);
+    if (step === 1 && !formData.goal) {
+      setError("Please select a primary goal to continue.");
+      return;
+    }
+    if (step === 2 && (!formData.age || !formData.height || !formData.weight)) {
+      setError("Please enter your age, height, and weight to calculate an accurate daily calorie target.");
+      return;
+    }
     if (step < 4) setStep(step + 1);
   };
 
@@ -40,10 +50,33 @@ export default function StepForm() {
     setLoading(true);
     setError(null);
     try {
+      // Calculate native TDEE and Target before sending
+      let bmr = 0;
+      const w = parseFloat(formData.weight);
+      const h = parseFloat(formData.height);
+      const a = parseInt(formData.age);
+      if(formData.sex === 'Male') {
+         bmr = (10 * w) + (6.25 * h) - (5 * a) + 5;
+      } else {
+         bmr = (10 * w) + (6.25 * h) - (5 * a) - 161;
+      }
+      
+      let multiplier = 1.2;
+      if(formData.activityLevel === 'Lightly Active') multiplier = 1.375;
+      if(formData.activityLevel === 'Moderately Active') multiplier = 1.55;
+      if(formData.activityLevel === 'Very Active') multiplier = 1.725;
+      
+      let tdee = bmr * multiplier;
+      if(formData.goal === 'Lose Weight') tdee -= 500;
+      if(formData.goal === 'Gain Weight' || formData.goal === 'Build Muscle') tdee += 300;
+      
+      const targetCalories = Math.round(tdee);
+      const finalPayload = { ...formData, targetCalories };
+
       const res = await fetch('/api/generate-plan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(finalPayload)
       });
       
       if (!res.ok) {
@@ -68,13 +101,16 @@ export default function StepForm() {
       }
       
       const payload = await res.json();
-      localStorage.setItem('nutri_mealPlan', JSON.stringify(payload));
-      localStorage.setItem('nutri_userProfile', JSON.stringify(formData));
+      
+      // Save directly to Neon Database overriding the LocalStorage
+      const { saveOnboardingData } = await import("@/actions/user.actions");
+      await saveOnboardingData(finalPayload, payload);
+
       router.push('/dashboard');
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Full request error:", err);
-      const originalErr = err.message || '';
+      const originalErr = err instanceof Error ? err.message : String(err);
       let errorMsg = originalErr || 'Something went wrong. Please try again.';
       let cooldownTime = 10;
       
@@ -110,7 +146,7 @@ export default function StepForm() {
       <div className="flex-1">
         {step === 1 && (
           <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
-            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">What's your primary goal?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">What&apos;s your primary goal?</h2>
             <div className="space-y-3">
               {['Lose Weight', 'Maintain Weight', 'Gain Weight', 'Build Muscle'].map(goal => (
                 <button 
@@ -149,6 +185,15 @@ export default function StepForm() {
                   <label className="text-sm font-semibold text-gray-700">Weight</label>
                   <input type="number" value={formData.weight} onChange={e => setFormData({...formData, weight: e.target.value})} placeholder="kg" className="w-full h-12 rounded-xl border border-gray-200 px-4 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors" />
                 </div>
+                <div className="space-y-1.5 col-span-2">
+                  <label className="text-sm font-semibold text-gray-700">Activity Level</label>
+                  <select value={formData.activityLevel} onChange={e => setFormData({...formData, activityLevel: e.target.value})} className="w-full h-12 rounded-xl border border-gray-200 px-4 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors bg-white">
+                    <option value="Sedentary">Sedentary (Little to no exercise)</option>
+                    <option value="Lightly Active">Lightly Active (1-3 days/week)</option>
+                    <option value="Moderately Active">Moderately Active (3-5 days/week)</option>
+                    <option value="Very Active">Very Active (6-7 days/week)</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -169,16 +214,44 @@ export default function StepForm() {
         {step === 4 && (
           <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-500">
             <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Any dietary constraints?</h2>
+            
+            <div className="flex flex-wrap gap-2">
+              {['None', 'Vegetarian', 'Vegan', 'Halal', 'No Pork', 'No Beef', 'Peanut Allergy'].map(preset => (
+                <button
+                  key={preset}
+                  onClick={() => {
+                    if (preset === 'None') {
+                      setFormData({...formData, restrictions: ''});
+                    } else {
+                      const current = formData.restrictions;
+                      // Avoid duplicating the same preset if they click it multiple times
+                      if (current.includes(preset)) return;
+                      const newRes = current ? `${current}, ${preset}` : preset;
+                      setFormData({...formData, restrictions: newRes});
+                    }
+                  }}
+                  className="px-3 py-1.5 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-700 hover:border-green-500 hover:bg-green-50 transition-colors focus:outline-none focus:ring-1 focus:ring-green-500 shadow-sm"
+                >
+                  {preset === 'None' ? 'None (Clear)' : `+ ${preset}`}
+                </button>
+              ))}
+            </div>
+
             <textarea 
               value={formData.restrictions}
               onChange={e => setFormData({...formData, restrictions: e.target.value})}
               placeholder="e.g. No shrimp, peanut allergy, vegetarian, lactose intolerant..."
               className="w-full h-32 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:border-green-500 focus:ring-green-500 resize-none text-gray-800 shadow-sm placeholder:text-gray-400 font-medium transition-colors"
             />
-            {error && <p className="text-sm font-medium text-red-500 animate-in fade-in">{error}</p>}
           </div>
         )}
       </div>
+
+      {error && (
+        <div className="bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm animate-in fade-in mb-4">
+           <p className="text-sm font-medium text-red-800">{error}</p>
+        </div>
+      )}
 
       <button 
         onClick={step === 4 ? handleComplete : handleNext}

@@ -8,6 +8,8 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
   adapter: PrismaAdapter(db) as Adapter,
   session: {
     strategy: "jwt",
@@ -54,6 +56,19 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   callbacks: {
+    async signIn({ user, profile: oauthProfile }) {
+      // Sync Google avatar + name on every login (fixes accounts created during broken adapter)
+      if (user.id && oauthProfile) {
+        await db.user.update({
+          where: { id: user.id },
+          data: {
+            image: (oauthProfile.picture as string) || user.image,
+            name: (oauthProfile.name as string) || user.name,
+          },
+        });
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

@@ -6,14 +6,13 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
-  const adapter = new PrismaNeon({
-    connectionString: process.env.DATABASE_URL!,
-  });
+  // In Prisma 7, PrismaNeon accepts connectionString directly — no Pool needed
+  const connectionString = process.env.DATABASE_URL!;
+  const adapter = new PrismaNeon({ connectionString });
   return new PrismaClient({ adapter });
 }
 
-export const db =
-  globalForPrisma.prisma ?? createPrismaClient();
+export const db = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = db;

@@ -15,7 +15,7 @@ export async function registerUser(values: z.infer<typeof RegisterSchema>) {
   const validated = RegisterSchema.safeParse(values);
 
   if (!validated.success) {
-    return { error: (validated as any).error.errors[0]?.message || "Validation failed" };
+    return { error: validated.error.issues[0]?.message || "Validation failed" };
   }
 
   const { name, email, password } = validated.data;

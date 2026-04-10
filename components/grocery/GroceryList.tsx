@@ -23,7 +23,7 @@ export default function GroceryList({ list }: { list: IGroceryList }) {
         {['ALL', 'WET_MARKET', 'SUPERMARKET'].map((tab) => (
           <button
             key={tab}
-            onClick={() => setFilter(tab as any)}
+            onClick={() => setFilter(tab as 'ALL' | 'WET_MARKET' | 'SUPERMARKET')}
             className={`flex-1 py-2.5 rounded-md transition-all ${filter === tab ? 'bg-white shadow-sm text-green-700' : 'text-gray-500 hover:text-gray-800'}`}
           >
             {tab === 'ALL' ? 'All Items' : tab === 'WET_MARKET' ? 'Wet Market' : 'Supermarket'}

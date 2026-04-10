@@ -1,78 +1,82 @@
-"use client";
-import { useState, useEffect } from 'react';
-import { mockGroceryList } from '@/lib/mock-data/groceryList';
-import GroceryList from '@/components/grocery/GroceryList';
-import { MealPlan, GroceryList as GroceryListType, GroceryItem } from '@/types';
+import { db } from "@/lib/db";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import GroceryList from "@/components/grocery/GroceryList";
+import { GroceryItem, GroceryList as GroceryListType } from "@/types";
+import { ShoppingCart } from "lucide-react";
 
-export default function GroceryPage() {
-  const [list, setList] = useState<GroceryListType | null>(null);
+export default async function GroceryPage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('nutri_mealPlan');
-      if (stored) {
-        const mealPlan: MealPlan = JSON.parse(stored);
-        
-        const itemMap = new Map<string, GroceryItem>();
-        
-        mealPlan.meals.forEach(meal => {
-          meal.ingredients.forEach((ing, index) => {
-            const key = ing.name.toLowerCase().trim();
-            if (itemMap.has(key)) {
-              const existing = itemMap.get(key)!;
-              if (existing.unit.toLowerCase() === ing.unit.toLowerCase()) {
-                existing.amount += ing.amount;
-              } else {
-                itemMap.set(`${key}-${ing.unit}`, {
-                  id: `ing-${meal.id}-${index}-${Date.now()}`,
-                  name: ing.name,
-                  amount: ing.amount,
-                  unit: ing.unit,
-                  category: ing.category,
-                  availability: 'BOTH',
-                  isChecked: false
-                });
-              }
-            } else {
-              itemMap.set(key, {
-                id: `ing-${meal.id}-${index}`,
-                name: ing.name,
-                amount: ing.amount,
-                unit: ing.unit,
-                category: ing.category,
-                availability: 'BOTH',
-                isChecked: false
-              });
-            }
-          });
-        });
+  const meals = await db.meal.findMany({
+    where: { userId: session.user.id, isAiGenerated: true },
+  });
 
-        // Round amounts to 2 decimal places to avoid floating point math errors
-        const finalItems = Array.from(itemMap.values()).map(item => ({
-          ...item,
-          amount: Math.round(item.amount * 100) / 100
-        }));
+  if (meals.length === 0) return (
+    <div className="flex flex-col items-center justify-center pt-32 px-4 space-y-4">
+      <div className="bg-gray-100 p-4 rounded-full"><ShoppingCart size={32} className="text-gray-400"/></div>
+      <p className="text-gray-500 font-medium text-center">No grocery list yet.<br/>Generate a meal plan first.</p>
+    </div>
+  );
 
-        setList({
-          id: 'dynamic-list',
-          weekOf: mealPlan.date || new Date().toISOString().split('T')[0],
-          items: finalItems
-        });
+  // Build grocery list from meal descriptions (ingredients are stored in description)
+  const itemMap = new Map<string, GroceryItem>();
+
+  meals.forEach(meal => {
+    // Parse ingredients from the description field
+    const descText = meal.description || "";
+    const ingredientMatch = descText.match(/Ingredients:\s*([\s\S]*?)(\n\nSteps:|$)/);
+    if (!ingredientMatch) return;
+
+    const ingredientLine = ingredientMatch[1];
+    const parts = ingredientLine.split(",").map(s => s.trim()).filter(Boolean);
+
+    parts.forEach((part, index) => {
+      // Try to parse "amount unit name" format e.g. "200 g chicken breast"
+      const match = part.match(/^([\d.]+)\s+(\S+)\s+(.+)$/);
+      const name = match ? match[3] : part;
+      const amount = match ? parseFloat(match[1]) : 1;
+      const unit = match ? match[2] : "pc";
+      const key = name.toLowerCase().trim();
+
+      if (itemMap.has(key)) {
+        const existing = itemMap.get(key)!;
+        if (existing.unit.toLowerCase() === unit.toLowerCase()) {
+          existing.amount += amount;
+        }
       } else {
-        setList(mockGroceryList);
+        itemMap.set(key, {
+          id: `ing-${meal.id}-${index}`,
+          name,
+          amount,
+          unit,
+          category: "PANTRY",
+          availability: "BOTH",
+          isChecked: false,
+        });
       }
-    } catch {
-      setList(mockGroceryList);
-    }
-  }, []);
+    });
+  });
 
-  if (!list) return <div className="p-8 text-center text-gray-500 text-sm">Loading grocery list...</div>;
+  const finalItems = Array.from(itemMap.values()).map(item => ({
+    ...item,
+    amount: Math.round(item.amount * 100) / 100,
+  }));
+
+  const list: GroceryListType = {
+    id: "db-list",
+    weekOf: new Date().toISOString().split("T")[0],
+    items: finalItems,
+  };
 
   return (
     <div className="px-4 pt-10 pb-24 space-y-6 animate-in fade-in duration-500">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Grocery List</h1>
-        <p className="text-sm text-gray-500">Week of {new Date(list.weekOf).toLocaleDateString('en-US', { month: 'short', day: 'numeric'})}</p>
+        <p className="text-sm text-gray-500">
+          Week of {new Date(list.weekOf).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+        </p>
       </header>
 
       <div className="pt-2">

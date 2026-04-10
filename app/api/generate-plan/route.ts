@@ -7,7 +7,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { goal, age, sex, height, weight, region, restrictions } = body;
+    const { goal, age, sex, height, weight, region, restrictions, targetCalories } = body;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) throw new Error("GEMINI_API_KEY is not configured.");
@@ -57,10 +57,10 @@ export async function POST(req: Request) {
     - Dietary restrictions/allergies: ${restrictions || 'None'}
     
     Instructions for Generation:
-    - First, calculate the user's TDEE (Total Daily Energy Expenditure) using the Mifflin-St Jeor equation based on the provided biometrics (age: ${age}, sex: ${sex}, height: ${height}cm, weight: ${weight}kg).
-    - Adjust the target daily calories strictly based on their goal (${goal}): Weight loss = TDEE minus 300-500 kcal, Muscle gain = TDEE plus 200-300 kcal, Maintain / Eat healthier = exactly TDEE.
-    - The sum of all meal calories combined MUST NOT exceed this calculated daily target. Ensure macros accurately align with the meal's calorie count.
-    - Focus exclusively on accessible Filipino cuisine and ingredients readily found in the specified region (${region}).
+    - The user's EXACT mathematically calculated daily target is ${targetCalories} kcal.
+    - CRITICAL CALORIE ENFORCEMENT: The exact mathematical sum of all individual meal calories MUST EXACTLY EQUAL dailySummary.totalCalories, and MUST NOT EXCEED the strict ${targetCalories} kcal limit. If your generated meals surpass this (like 600+ kcal individual meals), you MUST swap them for lighter options!
+    - Ensure macros accurately align mathematically with each meal's calorie count (Protein=4kcal/g, Carbs=4kcal/g, Fat=9kcal/g).
+    - Include a realistic mix of accessible Filipino cuisine AND universally common, practical everyday meals (e.g., scrambled eggs, oatmeal, grilled chicken, side salads) using ingredients readily found in the specified region (${region}). Do not aggressively force heavy local dishes if it breaks the calorie bank.
     - Ensure ingredient categories are strictly typed (PRODUCE, PROTEIN, PANTRY, SPICES) with no variations.
     - The output must be exactly ONE top-level MealPlan JSON structure and NOTHING ELSE.`;
 
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       "gemini-2.5-pro"
     ];
 
-    let lastError: any = null;
+    let lastError: unknown = null;
 
     for (const modelName of modelsToTry) {
       try {
@@ -93,9 +93,9 @@ export async function POST(req: Request) {
         console.log(`[Model Fallback] SUCCESS! Generated using: ${modelName}`);
         return NextResponse.json(plan);
 
-      } catch (err: any) {
+      } catch (err: unknown) {
         lastError = err;
-        const errString = err.message || '';
+        const errString = err instanceof Error ? err.message : String(err);
         console.log(`[Model Fallback] FAILED with ${modelName}:`, errString.split('\n')[0]);
         continue;
       }
@@ -103,10 +103,13 @@ export async function POST(req: Request) {
 
     throw lastError || new Error("All Gemini models failed to generate content.");
 
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.log("=== FULL ERROR BEGIN ===");
     console.log(err);
     console.log("=== FULL ERROR END ===");
-    return NextResponse.json({ error: err.message || "Failed to generate meal plan." }, { status: 500 });
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to generate meal plan." }, 
+      { status: 500 }
+    );
   }
 }
