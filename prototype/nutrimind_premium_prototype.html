@@ -1,0 +1,1825 @@
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+  rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  :root {
+    --mg: #4CAF50;
+    --mg2: #388E3C;
+    --mg-glow: rgba(76, 175, 80, 0.35);
+    --mg-light: #E8F5E9;
+    --indigo: #5C6BC0;
+    --indigo-light: #E8EAF6;
+    --indigo-glow: rgba(92, 107, 192, 0.35);
+    --coral: #EF5350;
+    --coral-bg: #FFEBEE;
+    --gold: #FFA726;
+    --gold-bg: #FFF3E0;
+    --teal: #26C6DA;
+    --teal-bg: #E0F7FA;
+  }
+
+  .app {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+
+  .phone-outer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .phone {
+    width: 340px;
+    border-radius: 32px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    min-height: 680px;
+  }
+
+  .screen.active {
+    display: flex;
+  }
+
+  /* LIGHT */
+  .light .app {
+    background: #F0F2F5;
+  }
+
+  .light .phone {
+    background: #F7F8FA;
+    border: 1px solid #E0E3E8;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  .light .bento {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    border: 1px solid #EAECEF;
+  }
+
+  .light .txt-pri {
+    color: #111827;
+  }
+
+  .light .txt-sec {
+    color: #6B7280;
+  }
+
+  .light .txt-hint {
+    color: #9CA3AF;
+  }
+
+  .light .sbar {
+    background: #fff;
+    color: #6B7280;
+  }
+
+  .light .top-header {
+    background: #fff;
+  }
+
+  .light .nav-float {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .light .pill-sel {
+    background: #F3F4F6;
+    color: #374151;
+    border: 1.5px solid transparent;
+  }
+
+  .light .pill-sel.active {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border-color: #4CAF50;
+  }
+
+  .light .input-field {
+    background: #F3F4F6;
+    border: 1.5px solid #E5E7EB;
+    color: #111827;
+  }
+
+  .light .input-field:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+
+  .light .prog-track {
+    background: #E5E7EB;
+  }
+
+  .light .meal-row {
+    background: #F9FAFB;
+    border: 1px solid #F0F2F5;
+  }
+
+  .light .food-card {
+    background: #fff;
+    border: 1px solid #EAECEF;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .light .grocery-row {
+    background: #fff;
+    border: 1px solid #EAECEF;
+  }
+
+  .light .fab {
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+  }
+
+  .light .toggle-track {
+    background: #E5E7EB;
+  }
+
+  .light .toggle-thumb {
+    background: #9CA3AF;
+  }
+
+  .light .toggle-track.on {
+    background: #4CAF50;
+  }
+
+  .light .toggle-thumb.on {
+    background: #fff;
+    transform: translateX(20px);
+  }
+
+  .light .modal-content {
+    background: #fff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  /* DARK */
+  .dark .app {
+    background: #0D0D0D;
+  }
+
+  .dark .phone {
+    background: #111113;
+    border: 1px solid #2A2A2E;
+  }
+
+  .dark .bento {
+    background: #1A1A1E;
+    border-radius: 20px;
+    border: 1px solid #2A2A2E;
+  }
+
+  .dark .txt-pri {
+    color: #F3F4F6;
+  }
+
+  .dark .txt-sec {
+    color: #9CA3AF;
+  }
+
+  .dark .txt-hint {
+    color: #4B5563;
+  }
+
+  .dark .sbar {
+    background: #111113;
+    color: #4B5563;
+  }
+
+  .dark .top-header {
+    background: #111113;
+  }
+
+  .dark .nav-float {
+    background: rgba(20, 20, 24, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .pill-sel {
+    background: #1F1F23;
+    color: #9CA3AF;
+    border: 1.5px solid #2A2A2E;
+  }
+
+  .dark .pill-sel.active {
+    background: rgba(76, 175, 80, 0.15);
+    color: #81C784;
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px var(--mg-glow);
+  }
+
+  .dark .input-field {
+    background: #1F1F23;
+    border: 1.5px solid #2A2A2E;
+    color: #F3F4F6;
+  }
+
+  .dark .input-field:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--mg-glow);
+  }
+
+  .dark .prog-track {
+    background: #2A2A2E;
+  }
+
+  .dark .meal-row {
+    background: #1A1A1E;
+    border: 1px solid #2A2A2E;
+  }
+
+  .dark .food-card {
+    background: #1A1A1E;
+    border: 1px solid #2A2A2E;
+  }
+
+  .dark .grocery-row {
+    background: #1A1A1E;
+    border: 1px solid #2A2A2E;
+  }
+
+  .dark .fab {
+    box-shadow: 0 0 20px var(--mg-glow), 0 4px 16px rgba(76, 175, 80, 0.3);
+  }
+
+  .dark .toggle-track {
+    background: #2A2A2E;
+  }
+
+  .dark .toggle-thumb {
+    background: #4B5563;
+  }
+
+  .dark .toggle-track.on {
+    background: #4CAF50;
+  }
+
+  .dark .toggle-thumb.on {
+    background: #fff;
+    transform: translateX(20px);
+  }
+
+  .dark .modal-content {
+    background: #1A1A1E;
+    border: 1px solid #2A2A2E;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .sbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 18px 4px;
+    font-size: 11px;
+  }
+
+  .top-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .content {
+    flex: 1;
+    padding: 0 14px 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-float {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 28px;
+    margin: 0 16px 16px;
+    padding: 10px 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .nav-bottom {
+    padding: 0 0 8px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .ni {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 16px;
+    transition: background 0.2s;
+  }
+
+  .ni.active {
+    background: rgba(76, 175, 80, 0.15);
+  }
+
+  .ni svg path,
+  .ni svg circle,
+  .ni svg rect,
+  .ni svg polyline {
+    stroke: #9CA3AF;
+  }
+
+  .ni.active svg path,
+  .ni.active svg circle,
+  .ni.active svg rect,
+  .ni.active svg polyline {
+    stroke: #4CAF50;
+  }
+
+  .ni-lbl {
+    font-size: 10px;
+    color: #9CA3AF;
+  }
+
+  .ni.active .ni-lbl {
+    color: #4CAF50;
+    font-weight: 600;
+  }
+
+  .fab-wrap {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 14px;
+    position: absolute;
+    bottom: 85px;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .fab {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #4CAF50;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    pointer-events: auto;
+  }
+
+  .toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  .toggle-track {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: background 0.25s;
+    cursor: pointer;
+  }
+
+  .toggle-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all 0.25s;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .badge-fil {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+  }
+
+  .badge-ai {
+    background: rgba(92, 107, 192, 0.15);
+    color: #7986CB;
+  }
+
+  .badge-ita {
+    background: rgba(239, 83, 80, 0.12);
+    color: #EF5350;
+  }
+
+  .bento {
+    margin-bottom: 12px;
+    padding: 16px;
+  }
+
+  .bento-sm {
+    padding: 12px;
+  }
+
+  .section-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .prog-bar {
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .prog-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .grocery-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+
+  .cb {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .cb.checked {
+    background: #4CAF50;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    border-width: 1.5px;
+    border-style: solid;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+  }
+
+  /* BOT DRAWER */
+  .bot-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .bot-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .bot-drawer {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    padding: 16px 20px 30px;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1);
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    max-height: 80%;
+    overflow-y: auto;
+  }
+
+  .dark .bot-drawer {
+    background: #1A1A1E;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid #2A2A2E;
+  }
+
+  .bot-drawer.active {
+    bottom: 0;
+  }
+
+  .modal-content {
+    width: 85%;
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="app" id="app">
+  <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.25rem;">
+    <span id="theme-lbl" style="font-size:13px;font-weight:600;color:#9CA3AF;">Dark mode</span>
+    <div class="toggle-wrap" onclick="toggleTheme()">
+      <div class="toggle-track on" id="tog-track">
+        <div class="toggle-thumb on" id="tog-thumb"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-outer">
+    <div class="phone" id="phone">
+
+      <!-- NUTRIBOT DRAWER -->
+      <div class="bot-overlay" id="bot-overlay" onclick="closeBotDrawer()"></div>
+      <div class="bot-drawer" id="bot-drawer">
+        <div style="width:40px;height:4px;background:#4B5563;border-radius:2px;margin:0 auto 16px;"></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <div
+            style="width:36px;height:36px;background:linear-gradient(135deg,#4CAF50,#26C6DA);border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(76,175,80,0.3);">
+            <span style="font-size:18px;">✨</span>
+          </div>
+          <div>
+            <p style="font-size:14px;font-weight:700;" class="txt-pri">NutriBot</p>
+            <p style="font-size:11px;" class="txt-sec">AI Assistant</p>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;max-height:220px;overflow-y:auto;padding-right:4px;">
+          <!-- LOGGING CONVERSATION -->
+          <div id="bot-chat-log" style="display:flex;flex-direction:column;gap:12px;">
+            <div
+              style="align-self:flex-end;background:#4CAF50;color:#fff;padding:10px 14px;border-radius:16px 16px 4px 16px;font-size:13px;max-width:85%;">
+              I just ate Chicken Mami and an extra cup of rice outside.
+            </div>
+            <div
+              style="align-self:flex-start;background:rgba(156,163,175,0.15);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.4;"
+              class="txt-pri">
+              Got it, Chimairel! Was that a regular bowl of Chicken Mami with 1 extra cup of rice on the side?
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Yes, 1 Cup Rice</div>
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                No Rice on Side</div>
+            </div>
+          </div>
+
+          <!-- SWAP CONVERSATION -->
+          <div id="bot-chat-swap" style="display:none;flex-direction:column;gap:12px;">
+            <div
+              style="align-self:flex-start;background:rgba(156,163,175,0.15);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.4;"
+              class="txt-pri">
+              I can definitely change that meal! You have roughly 420 calories to replace. What are you craving instead?
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Something with Soup</div>
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Western Food</div>
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Surprise Me ✨</div>
+            </div>
+          </div>
+
+          <!-- GENERATE DAY CONVERSATION -->
+          <div id="bot-chat-genday" style="display:none;flex-direction:column;gap:12px;">
+            <div
+              style="align-self:flex-start;background:rgba(156,163,175,0.15);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.4;"
+              class="txt-pri">
+              Let's shake up your meal plan! Do you want me to regenerate your entire day from scratch, or keep what
+              you've already eaten and just change the upcoming meals?
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Regenerate Entire Day</div>
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Only change Dinner</div>
+              <div
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Keep Filipino Food</div>
+            </div>
+          </div>
+
+          <!-- PROFILE STEP 1 -->
+          <div id="bot-chat-profile-step1" style="display:none;flex-direction:column;gap:12px;">
+            <div
+              style="align-self:flex-start;background:rgba(156,163,175,0.15);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.4;"
+              class="txt-pri">
+              I see you changed your goal to Build Muscle! We're currently in the middle of your meal week (Wednesday).
+              Do you want to update your remaining meals right now, or wait until next week's reset?
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <div
+                onclick="document.getElementById('bot-chat-profile-step1').style.display='none';document.getElementById('bot-chat-profile-step2').style.display='flex';"
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Update Remaining Meals</div>
+              <div onclick="closeBotDrawer()"
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Wait until Sunday</div>
+            </div>
+          </div>
+
+          <!-- PROFILE FINAL SUMMARY -->
+          <div id="bot-chat-profile-step2" style="display:none;flex-direction:column;gap:12px;">
+            <div
+              style="align-self:flex-end;background:#4CAF50;color:#fff;padding:10px 14px;border-radius:16px 16px 4px 16px;font-size:13px;max-width:85%;">
+              Update Remaining Meals
+            </div>
+            <div
+              style="align-self:flex-start;background:rgba(156,163,175,0.15);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.4;"
+              class="txt-pri">
+              Alright, just to finalize everything: I'm recalculating your target to 2,450 kcal and replacing your meals
+              for Thursday to Sunday to prioritize high protein. Is this correct?
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <div onclick="closeBotDrawer()"
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Confirm & Update ✅</div>
+              <div onclick="closeBotDrawer()"
+                style="padding:6px 12px;border:1.5px solid rgba(76,175,80,0.5);color:#4CAF50;border-radius:14px;font-size:12px;font-weight:600;cursor:pointer;background:rgba(76,175,80,0.05);">
+                Wait, Cancel ❌</div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="display:flex;align-items:center;gap:10px;background:rgba(156,163,175,0.1);padding:12px 14px;border-radius:16px;">
+          <input type="text" placeholder="Type or select an option..."
+            style="flex:1;background:none;border:none;outline:none;font-size:13px;font-family:inherit;" class="txt-pri">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="txt-pri">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;" class="txt-pri">Edit Stats</h3>
+
+          <div style="margin-bottom:12px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Weight (kg)</p>
+            <input class="input-field" type="number" value="68"
+              style="width:100%;padding:10px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;">
+            <div>
+              <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Height (cm)</p>
+              <input class="input-field" type="number" value="170"
+                style="width:100%;padding:10px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+            <div>
+              <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Age</p>
+              <input class="input-field" type="number" value="22"
+                style="width:100%;padding:10px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button onclick="closeModal()"
+              style="flex:1;padding:12px;border-radius:12px;background:transparent;border:1.5px solid #4B5563;color:#9CA3AF;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;">Cancel</button>
+            <button onclick="saveModal()"
+              style="flex:1;padding:12px;border-radius:12px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-landing" class="screen active">
+        <div class="sbar"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+          <div
+            style="width:100px;height:100px;border-radius:24px;background:rgba(76,175,80,0.15);display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:24px;box-shadow:0 0 40px var(--mg-glow);">
+            🌱</div>
+          <h1 style="font-size:32px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px;" class="txt-pri">
+            Nutri<span style="color:#4CAF50;">Mind</span></h1>
+          <p style="font-size:15px;text-align:center;margin-bottom:48px;line-height:1.5;" class="txt-sec">Your smartest
+            companion for nutrition tracking and AI meal discovery.</p>
+          <div style="width:100%;display:flex;flex-direction:column;gap:14px;">
+            <button onclick="go('s-register')"
+              style="width:100%;padding:14px;border-radius:14px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;box-shadow: 0 4px 14px rgba(76, 175, 80, 0.4);transition:transform 0.2s;">Get
+              Started</button>
+            <button onclick="go('s-login')"
+              style="width:100%;padding:14px;border-radius:14px;background:transparent;color:#4CAF50;border:1.5px solid #4CAF50;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;transition:background 0.2s;">Log
+              In</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-login" class="screen">
+        <div class="sbar"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div style="padding:20px 24px;flex:1;">
+          <div style="margin-bottom:40px;margin-top:20px;">
+            <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;" class="txt-pri">Welcome back 👋</h2>
+            <p style="font-size:14px;" class="txt-sec">Please enter your details to sign in.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px;">
+            <div>
+              <p style="font-size:12px;font-weight:600;margin-bottom:6px;" class="txt-sec">Email</p>
+              <input class="input-field" type="email" placeholder="chimairel@example.com"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+            <div>
+              <p style="font-size:12px;font-weight:600;margin-bottom:6px;" class="txt-sec">Password</p>
+              <input class="input-field" type="password" placeholder="••••••••"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+          </div>
+          <button onclick="go('s-dash')"
+            style="width:100%;padding:14px;border-radius:14px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;box-shadow: 0 4px 14px rgba(76, 175, 80, 0.4);">Sign
+            In</button>
+
+          <div style="display:flex;align-items:center;margin: 20px 0;">
+            <div style="flex:1;height:1px;background:#E5E7EB;" class="prog-track"></div>
+            <p style="font-size:11px;color:#9CA3AF;margin:0 12px;font-weight:700;">OR</p>
+            <div style="flex:1;height:1px;background:#E5E7EB;" class="prog-track"></div>
+          </div>
+
+          <button onclick="go('s-dash')"
+            style="width:100%;padding:12px;border-radius:14px;background:transparent;color:#374151;border:1.5px solid #E5E7EB;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;"
+            class="txt-pri">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
+            </svg>
+            Continue with Google
+          </button>
+          <p style="text-align:center;font-size:13px;margin-top:24px;" class="txt-sec">Don't have an account? <span
+              style="color:#4CAF50;font-weight:700;cursor:pointer;" onclick="go('s-register')">Sign up</span></p>
+        </div>
+      </div>
+
+      <div id="s-register" class="screen">
+        <div class="sbar"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div style="padding:20px 24px;flex:1;">
+          <div style="margin-bottom:32px;margin-top:20px;">
+            <h2 style="font-size:28px;font-weight:700;margin-bottom:8px;" class="txt-pri">Create account 🚀</h2>
+            <p style="font-size:14px;" class="txt-sec">Let's get started on your nutrition journey.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:32px;">
+            <div>
+              <p style="font-size:12px;font-weight:600;margin-bottom:6px;" class="txt-sec">Name</p>
+              <input class="input-field" type="text" placeholder="Chimairel Pacaldo"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+            <div>
+              <p style="font-size:12px;font-weight:600;margin-bottom:6px;" class="txt-sec">Email</p>
+              <input class="input-field" type="email" placeholder="chimairel@example.com"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+            <div>
+              <p style="font-size:12px;font-weight:600;margin-bottom:6px;" class="txt-sec">Password</p>
+              <input class="input-field" type="password" placeholder="••••••••"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;">
+            </div>
+          </div>
+          <button onclick="go('s-onboard')"
+            style="width:100%;padding:14px;border-radius:14px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;box-shadow: 0 4px 14px rgba(76, 175, 80, 0.4);">Sign
+            Up</button>
+
+          <div style="display:flex;align-items:center;margin: 20px 0;">
+            <div style="flex:1;height:1px;background:#E5E7EB;" class="prog-track"></div>
+            <p style="font-size:11px;color:#9CA3AF;margin:0 12px;font-weight:700;">OR</p>
+            <div style="flex:1;height:1px;background:#E5E7EB;" class="prog-track"></div>
+          </div>
+
+          <button onclick="go('s-onboard')"
+            style="width:100%;padding:12px;border-radius:14px;background:transparent;color:#374151;border:1.5px solid #E5E7EB;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;"
+            class="txt-pri">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
+            </svg>
+            Continue with Google
+          </button>
+          <p style="text-align:center;font-size:13px;margin-top:24px;" class="txt-sec">Already have an account? <span
+              style="color:#4CAF50;font-weight:700;cursor:pointer;" onclick="go('s-login')">Log in</span></p>
+        </div>
+      </div>
+
+      <div id="s-onboard" class="screen">
+        <div class="sbar" id="sb0"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div style="flex:1;padding:20px 16px 100px;">
+          <div style="display:flex;gap:6px;margin-bottom:24px;">
+            <div style="flex:1;height:4px;border-radius:2px;background:#4CAF50;"></div>
+            <div style="flex:1;height:4px;border-radius:2px;" class="prog-track"></div>
+            <div style="flex:1;height:4px;border-radius:2px;" class="prog-track"></div>
+            <div style="flex:1;height:4px;border-radius:2px;" class="prog-track"></div>
+          </div>
+          <p style="font-size:11px;font-weight:600;letter-spacing:0.5px;margin-bottom:4px;" class="txt-hint">STEP 1 OF 4
+          </p>
+          <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;" class="txt-pri">Your body stats</h2>
+          <p style="font-size:13px;margin-bottom:20px;" class="txt-sec">We'll calculate your perfect calorie target</p>
+
+          <div class="bento bento-sm" style="margin-bottom:10px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">YOUR GOAL</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="pill-sel active"
+                onclick="selPill(this,'goal'); document.getElementById('target-wt-container').style.opacity='1'; document.getElementById('target-wt-container').style.pointerEvents='auto';"
+                data-grp="goal"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Lose weight
+              </div>
+              <div class="pill-sel"
+                onclick="selPill(this,'goal'); document.getElementById('target-wt-container').style.opacity='1'; document.getElementById('target-wt-container').style.pointerEvents='auto';"
+                data-grp="goal"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Build muscle
+              </div>
+              <div class="pill-sel"
+                onclick="selPill(this,'goal'); document.getElementById('target-wt-container').style.opacity='0.3'; document.getElementById('target-wt-container').style.pointerEvents='none';"
+                data-grp="goal"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Maintain
+              </div>
+            </div>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:10px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">BIOMETRICS</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+              <div>
+                <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Age</p><input
+                  class="input-field" type="number" placeholder="24"
+                  style="width:100%;padding:9px 12px;border-radius:10px;font-size:14px;font-family:inherit;">
+              </div>
+              <div>
+                <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Height (cm)</p><input
+                  class="input-field" type="number" placeholder="170"
+                  style="width:100%;padding:9px 12px;border-radius:10px;font-size:14px;font-family:inherit;">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div>
+                <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Weight (kg)</p><input
+                  class="input-field" type="number" placeholder="68"
+                  style="width:100%;padding:9px 12px;border-radius:10px;font-size:14px;font-family:inherit;">
+              </div>
+              <div id="target-wt-container" style="transition: opacity 0.3s;">
+                <p style="font-size:11px;font-weight:600;margin-bottom:5px;" class="txt-sec">Target (kg)</p><input
+                  class="input-field" type="number" placeholder="60"
+                  style="width:100%;padding:9px 12px;border-radius:10px;font-size:14px;font-family:inherit;">
+              </div>
+            </div>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:20px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">ACTIVITY LEVEL</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="pill-sel active" onclick="selPill(this,'act')" data-grp="act"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Sedentary
+              </div>
+              <div class="pill-sel" onclick="selPill(this,'act')" data-grp="act"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Lightly
+                active</div>
+              <div class="pill-sel" onclick="selPill(this,'act')" data-grp="act"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Active</div>
+              <div class="pill-sel" onclick="selPill(this,'act')" data-grp="act"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Very active
+              </div>
+            </div>
+          </div>
+
+          <button onclick="go('s-onboard-2')"
+            style="width:100%;padding:13px;border-radius:14px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;letter-spacing:0.2px;">Continue
+            &rarr;</button>
+        </div>
+      </div>
+
+      <div id="s-onboard-2" class="screen">
+        <div class="sbar"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div style="flex:1;padding:20px 16px 100px;">
+          <div style="display:flex;gap:6px;margin-bottom:24px;">
+            <div style="flex:1;height:4px;border-radius:2px;background:#4CAF50;"></div>
+            <div style="flex:1;height:4px;border-radius:2px;background:#4CAF50;"></div>
+            <div style="flex:1;height:4px;border-radius:2px;" class="prog-track"></div>
+            <div style="flex:1;height:4px;border-radius:2px;" class="prog-track"></div>
+          </div>
+          <p style="font-size:11px;font-weight:600;letter-spacing:0.5px;margin-bottom:4px;" class="txt-hint">STEP 2 OF 4
+          </p>
+          <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;" class="txt-pri">Your Food Profile</h2>
+          <p style="font-size:13px;margin-bottom:20px;" class="txt-sec">Tell us what you love (and what you don't)</p>
+
+          <div class="bento bento-sm" style="margin-bottom:10px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">NATIONALITY / FOOD CULTURE</p>
+            <div style="position:relative;">
+              <select class="input-field"
+                style="width:100%;padding:12px 14px;border-radius:12px;font-size:14px;font-family:inherit;appearance:none;cursor:pointer;">
+                <option value="ph">Philippines (Filipino Food)</option>
+                <option value="vn">Vietnam (Vietnamese Food)</option>
+                <option value="in">India (Indian Food)</option>
+                <option value="mx">Mexico (Mexican Food)</option>
+                <option value="us">United States (Western Food)</option>
+              </select>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"
+                style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <p style="font-size:11px;margin-top:8px;" class="txt-sec">We'll tailor your meal discoveries to your local
+              favorites.</p>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:10px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">CARB PREFERENCE</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="pill-sel active" onclick="selPill(this,'carb')" data-grp="carb"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Include Rice
+              </div>
+              <div class="pill-sel" onclick="selPill(this,'carb')" data-grp="carb"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Strictly No
+                Rice
+              </div>
+              <div class="pill-sel" onclick="selPill(this,'carb')" data-grp="carb"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Low Carb
+                generally
+              </div>
+            </div>
+            <p style="font-size:11px;margin-top:8px;" class="txt-sec">We'll ensure your meals are paired perfectly.</p>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:20px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">DIETARY & RESTRICTIONS</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div class="pill-sel" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Halal
+              </div>
+              <div class="pill-sel active" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">No Pork
+              </div>
+              <div class="pill-sel" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Vegan
+              </div>
+              <div class="pill-sel" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Dairy-free
+              </div>
+              <div class="pill-sel active" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Shrimp
+                Allergy
+              </div>
+              <div class="pill-sel" onclick="this.classList.toggle('active')"
+                style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;">Peanut
+                Allergy
+              </div>
+            </div>
+            <p style="font-size:11px;margin-top:10px;" class="txt-sec">Select all that apply.</p>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button onclick="go('s-onboard')"
+              style="padding:13px 20px;border-radius:14px;background:transparent;color:#9CA3AF;border:1.5px solid #4B5563;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;">Back</button>
+            <button onclick="go('s-dash')"
+              style="flex:1;padding:13px;border-radius:14px;background:#4CAF50;color:#fff;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:inherit;letter-spacing:0.2px;">Continue
+              &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-dash" class="screen">
+        <div class="sbar" id="sb1"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div class="top-header">
+          <div>
+            <p style="font-size:11px;font-weight:600;" class="txt-hint">GOOD MORNING</p>
+            <p style="font-size:17px;font-weight:700;" class="txt-pri">Chimairel Pacaldo</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="toggle-wrap" onclick="toggleTheme()">
+              <div class="toggle-track on" id="tog2-track">
+                <div class="toggle-thumb on" id="tog2-thumb"></div>
+              </div>
+            </div>
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:rgba(76,175,80,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#4CAF50;">
+              CP</div>
+          </div>
+        </div>
+        <div class="content">
+          <div class="bento" style="text-align:center;margin-bottom:12px;">
+            <p style="font-size:11px;font-weight:600;margin-bottom:12px;" class="txt-hint">DAILY CALORIES</p>
+            <div style="position:relative;width:150px;height:150px;margin:0 auto 14px;">
+              <svg width="150" height="150" viewBox="0 0 150 150">
+                <circle cx="75" cy="75" r="64" fill="none" stroke-width="12" stroke="#2A2A2E" />
+                <circle cx="75" cy="75" r="64" fill="none" stroke-width="12" stroke="#4CAF50" stroke-dasharray="402"
+                  stroke-dashoffset="118" stroke-linecap="round" transform="rotate(-90 75 75)" />
+              </svg>
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+                <p style="font-size:26px;font-weight:700;line-height:1;" class="txt-pri">1,272</p>
+                <p style="font-size:11px;font-weight:500;" class="txt-hint">of 1,800 kcal</p>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+              <div
+                style="text-align:center;padding:8px 12px;border-radius:12px;background:rgba(239,83,80,0.1);min-width:70px;">
+                <p style="font-size:15px;font-weight:700;color:#EF5350;">58g</p>
+                <p style="font-size:10px;font-weight:600;color:#EF5350;">Protein</p>
+                <div class="prog-bar" style="background:rgba(239,83,80,0.2);">
+                  <div class="prog-fill" style="width:46%;background:#EF5350;"></div>
+                </div>
+              </div>
+              <div
+                style="text-align:center;padding:8px 12px;border-radius:12px;background:rgba(255,167,38,0.1);min-width:70px;">
+                <p style="font-size:15px;font-weight:700;color:#FFA726;">124g</p>
+                <p style="font-size:10px;font-weight:600;color:#FFA726;">Carbs</p>
+                <div class="prog-bar" style="background:rgba(255,167,38,0.2);">
+                  <div class="prog-fill" style="width:62%;background:#FFA726;"></div>
+                </div>
+              </div>
+              <div
+                style="text-align:center;padding:8px 12px;border-radius:12px;background:rgba(38,198,218,0.1);min-width:70px;">
+                <p style="font-size:15px;font-weight:700;color:#26C6DA;">32g</p>
+                <p style="font-size:10px;font-weight:600;color:#26C6DA;">Fats</p>
+                <div class="prog-bar" style="background:rgba(38,198,218,0.2);">
+                  <div class="prog-fill" style="width:53%;background:#26C6DA;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p style="font-size:11px;font-weight:600;margin-bottom:8px;" class="txt-hint">QUICK LOG</p>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
+
+            <!-- BREAKFAST — Done -->
+            <div class="meal-row" onclick="openMealDetail('Breakfast','Sinangag, Tocino','590','done')"
+              style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:14px;cursor:pointer;opacity:0.7;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div
+                  style="width:34px;height:34px;border-radius:10px;background:rgba(76,175,80,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8l3.5 3.5L13 4" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:600;text-decoration:line-through;" class="txt-sec">Breakfast</p>
+                  <p style="font-size:11px;" class="txt-hint">Sinangag, Tocino · 590 kcal</p>
+                </div>
+              </div>
+              <span style="font-size:11px;font-weight:600;color:#4CAF50;">Done ✓</span>
+            </div>
+
+            <!-- LUNCH — Done -->
+            <div class="meal-row" onclick="openMealDetail('Lunch','Sinigang na Baboy + Rice','420','done')"
+              style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:14px;cursor:pointer;opacity:0.7;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div
+                  style="width:34px;height:34px;border-radius:10px;background:rgba(76,175,80,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8l3.5 3.5L13 4" stroke="#4CAF50" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:600;text-decoration:line-through;" class="txt-sec">Lunch</p>
+                  <p style="font-size:11px;" class="txt-hint">Sinigang na Baboy + Rice · 420 kcal</p>
+                </div>
+              </div>
+              <span style="font-size:11px;font-weight:600;color:#4CAF50;">Done ✓</span>
+            </div>
+
+            <!-- EXTRA — Unplanned (logged via NutriBot) -->
+            <div class="meal-row" onclick="openMealDetail('Extra · 1:04 PM','Chicken Mami + Extra Rice','380','extra')"
+              style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(156,107,192,0.3);opacity:0.85;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div
+                  style="width:34px;height:34px;border-radius:10px;background:rgba(156,107,192,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2v4M8 10v4M2 8h4M10 8h4" stroke="#9C6BC0" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <p style="font-size:13px;font-weight:600;text-decoration:line-through;" class="txt-sec">Extra</p>
+                    <span
+                      style="font-size:10px;font-weight:700;color:#9C6BC0;background:rgba(156,107,192,0.15);padding:2px 6px;border-radius:6px;">Unplanned</span>
+                  </div>
+                  <p style="font-size:11px;" class="txt-hint">Chicken Mami + Extra Rice · 1:04 PM · 380 kcal</p>
+                </div>
+              </div>
+              <span style="font-size:11px;font-weight:600;color:#9C6BC0;">Logged ✓</span>
+            </div>
+
+            <!-- DINNER — Pending -->
+            <div class="meal-row" onclick="openMealDetail('Dinner','Adobong Manok + Rice','420','pending')"
+              style="display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:14px;cursor:pointer;border:1.5px solid rgba(255,167,38,0.3);">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div
+                  style="width:34px;height:34px;border-radius:10px;background:rgba(255,167,38,0.15);display:flex;align-items:center;justify-content:center;">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6" stroke="#FFA726" stroke-width="1.5" />
+                    <path d="M8 5v3l2 1.5" stroke="#FFA726" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div>
+                  <p style="font-size:13px;font-weight:600;" class="txt-pri">Dinner</p>
+                  <p style="font-size:11px;" class="txt-hint">Adobong Manok + Rice · 420 kcal</p>
+                </div>
+              </div>
+              <span
+                style="font-size:11px;font-weight:700;color:#FFA726;background:rgba(255,167,38,0.12);padding:3px 8px;border-radius:8px;">Pending</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- MEAL DETAIL BOTTOM SHEET -->
+        <div class="bot-overlay" id="meal-overlay" onclick="closeMealDetail()"></div>
+        <div class="bot-drawer" id="meal-drawer">
+          <div style="width:40px;height:4px;background:#4B5563;border-radius:2px;margin:0 auto 16px;"></div>
+          <div id="meal-detail-content">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+        <div class="fab-wrap"><button class="fab" onclick="openBotDrawer('log')"><svg width="24" height="24"
+              viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" />
+            </svg></button></div>
+        <div class="nav-bottom">
+          <div class="nav-float">
+            <div class="ni active" onclick="go('s-dash')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 9l7-7 7 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke-width="1.5" stroke-linejoin="round" />
+              </svg><span class="ni-lbl">Home</span></div>
+            <div class="ni" onclick="go('s-meals')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke-width="1.5" />
+                <path d="M7 10h6M10 7v6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Meals</span></div>
+            <div class="ni" onclick="go('s-grocery')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 4h2l2.5 9h7l2-6H7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9" cy="16" r="1" stroke-width="1.5" />
+                <circle cx="14" cy="16" r="1" stroke-width="1.5" />
+              </svg><span class="ni-lbl">Grocery</span></div>
+            <div class="ni" onclick="go('s-profile')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="3" stroke-width="1.5" />
+                <path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-meals" class="screen">
+        <div class="sbar" id="sb2"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div class="top-header">
+          <p style="font-size:17px;font-weight:700;" class="txt-pri">Weekly Meal Plan</p>
+          <div
+            style="width:34px;height:34px;border-radius:50%;background:rgba(92,107,192,0.15);display:flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M7 12A5 5 0 107 2a5 5 0 000 10zM13 13l-2.5-2.5" stroke="#7986CB" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg>
+          </div>
+        </div>
+        <div class="content">
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:4px;scrollbar-width:none;"
+            class="txt-pri">
+            <div
+              style="padding:6px 16px;background:#4CAF50;color:#fff;border-radius:20px;font-weight:700;font-size:12px;white-space:nowrap;box-shadow: 0 4px 10px var(--mg-glow);">
+              Mon (Today)</div>
+            <div
+              style="padding:6px 16px;background:rgba(156,163,175,0.15);border-radius:20px;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;">
+              Tue</div>
+            <div
+              style="padding:6px 16px;background:rgba(156,163,175,0.15);border-radius:20px;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;">
+              Wed</div>
+            <div
+              style="padding:6px 16px;background:rgba(156,163,175,0.15);border-radius:20px;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;">
+              Thu</div>
+            <div
+              style="padding:6px 16px;background:rgba(156,163,175,0.15);border-radius:20px;font-weight:600;font-size:12px;white-space:nowrap;cursor:pointer;">
+              Fri</div>
+          </div>
+          <div class="search-bar" id="search-bar" style="margin-bottom:10px;"><svg width="16" height="16"
+              viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+              <path d="M7 12A5 5 0 107 2a5 5 0 000 10zM13 13l-2.5-2.5" stroke="#9CA3AF" stroke-width="1.5"
+                stroke-linecap="round" />
+            </svg><input type="text" placeholder="Search Filipino dishes..."
+              style="flex:1;background:transparent;border:none;outline:none;font-size:13px;font-family:inherit;"
+              class="txt-pri" id="search-in"></div>
+          <button onclick="openBotDrawer('genday')"
+            style="width:100%;padding:11px;border-radius:14px;background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(92,107,192,0.15));border:1.5px solid #4CAF50;cursor:pointer;font-size:13px;font-weight:700;color:#4CAF50;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5L8 2z" fill="#4CAF50" />
+            </svg>
+            Generate new day with AI &#8599;
+          </button>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+
+            <!-- BREAKFAST CARD — Done -->
+            <div class="food-card"
+              style="border-radius:16px;overflow:hidden;cursor:pointer;position:relative;opacity:0.75;"
+              onclick="openMealDetail('Breakfast','Sinangag, Tocino + Egg','590','done')">
+              <div style="position:absolute;top:10px;right:10px;z-index:2;display:flex;gap:6px;align-items:center;">
+                <span
+                  style="font-size:10px;font-weight:700;color:#4CAF50;background:rgba(76,175,80,0.15);padding:3px 8px;border-radius:8px;">Done
+                  ✓</span>
+                <div onclick="event.stopPropagation();openBotDrawer('swap');"
+                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
+                  ⟲</div>
+              </div>
+              <div style="display:flex;align-items:center;padding:14px;gap:14px;">
+                <div
+                  style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(255,167,38,0.2),rgba(239,83,80,0.2));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">
+                  🍳</div>
+                <div style="flex:1;">
+                  <p style="font-size:10px;font-weight:700;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:2px;">
+                    BREAKFAST · 7:30 AM</p>
+                  <p style="font-size:14px;font-weight:700;margin-bottom:6px;" class="txt-pri">Sinangag, Tocino + Egg
+                  </p>
+                  <div style="display:flex;gap:10px;font-size:10px;font-weight:600;">
+                    <span style="color:#EF5350;">P 28g</span>
+                    <span style="color:#FFA726;">C 72g</span>
+                    <span style="color:#26C6DA;">F 16g</span>
+                    <span style="color:#4CAF50;margin-left:auto;">590 kcal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LUNCH CARD — Done -->
+            <div class="food-card"
+              style="border-radius:16px;overflow:hidden;cursor:pointer;position:relative;opacity:0.75;"
+              onclick="openMealDetail('Lunch','Sinigang na Baboy + Rice','420','done')">
+              <div style="position:absolute;top:10px;right:10px;z-index:2;display:flex;gap:6px;align-items:center;">
+                <span
+                  style="font-size:10px;font-weight:700;color:#4CAF50;background:rgba(76,175,80,0.15);padding:3px 8px;border-radius:8px;">Done
+                  ✓</span>
+                <div onclick="event.stopPropagation();openBotDrawer('swap');"
+                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
+                  ⟲</div>
+              </div>
+              <div style="display:flex;align-items:center;padding:14px;gap:14px;">
+                <div
+                  style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(38,198,218,0.2),rgba(92,107,192,0.2));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">
+                  🍲</div>
+                <div style="flex:1;">
+                  <p style="font-size:10px;font-weight:700;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:2px;">LUNCH
+                    · 12:00 PM</p>
+                  <p style="font-size:14px;font-weight:700;margin-bottom:6px;" class="txt-pri">Sinigang na Baboy + Rice
+                  </p>
+                  <div style="display:flex;gap:10px;font-size:10px;font-weight:600;">
+                    <span style="color:#EF5350;">P 32g</span>
+                    <span style="color:#FFA726;">C 58g</span>
+                    <span style="color:#26C6DA;">F 10g</span>
+                    <span style="color:#4CAF50;margin-left:auto;">420 kcal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DINNER CARD — Pending -->
+            <div class="food-card"
+              style="border-radius:16px;overflow:hidden;cursor:pointer;position:relative;border:1.5px solid rgba(255,167,38,0.35);"
+              onclick="openMealDetail('Dinner','Adobong Manok + Rice','420','pending')">
+              <div style="position:absolute;top:10px;right:10px;z-index:2;display:flex;gap:6px;align-items:center;">
+                <span
+                  style="font-size:10px;font-weight:700;color:#FFA726;background:rgba(255,167,38,0.12);padding:3px 8px;border-radius:8px;">Pending</span>
+                <div onclick="event.stopPropagation();openBotDrawer('swap');"
+                  style="background:rgba(0,0,0,0.3);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;backdrop-filter:blur(4px);cursor:pointer;">
+                  ⟲</div>
+              </div>
+              <div style="display:flex;align-items:center;padding:14px;gap:14px;">
+                <div
+                  style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(239,83,80,0.2),rgba(255,167,38,0.2));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">
+                  🍗</div>
+                <div style="flex:1;">
+                  <p style="font-size:10px;font-weight:700;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:2px;">DINNER
+                    · 7:00 PM</p>
+                  <p style="font-size:14px;font-weight:700;margin-bottom:6px;" class="txt-pri">Adobong Manok + Rice</p>
+                  <div style="display:flex;gap:10px;font-size:10px;font-weight:600;">
+                    <span style="color:#EF5350;">P 35g</span>
+                    <span style="color:#FFA726;">C 48g</span>
+                    <span style="color:#26C6DA;">F 18g</span>
+                    <span style="color:#4CAF50;margin-left:auto;">420 kcal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="nav-bottom">
+          <div class="nav-float">
+            <div class="ni" onclick="go('s-dash')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 9l7-7 7 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke-width="1.5" stroke-linejoin="round" />
+              </svg><span class="ni-lbl">Home</span></div>
+            <div class="ni active" onclick="go('s-meals')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke-width="1.5" />
+                <path d="M7 10h6M10 7v6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Meals</span></div>
+            <div class="ni" onclick="go('s-grocery')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 4h2l2.5 9h7l2-6H7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9" cy="16" r="1" stroke-width="1.5" />
+                <circle cx="14" cy="16" r="1" stroke-width="1.5" />
+              </svg><span class="ni-lbl">Grocery</span></div>
+            <div class="ni" onclick="go('s-profile')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="3" stroke-width="1.5" />
+                <path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-grocery" class="screen">
+        <div class="sbar" id="sb3"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div class="top-header">
+          <p style="font-size:17px;font-weight:700;" class="txt-pri">Grocery List</p><span
+            style="font-size:12px;font-weight:600;color:#4CAF50;padding:5px 12px;border-radius:20px;border:1.5px solid #4CAF50;cursor:pointer;">Export</span>
+        </div>
+        <div class="content">
+          <div class="bento bento-sm" style="margin-bottom:10px;">
+            <p style="font-size:11px;font-weight:700;color:#4CAF50;margin-bottom:8px;letter-spacing:0.5px;">PRODUCE</p>
+            <div id="gl-produce">
+              <div class="grocery-row" onclick="toggleCheck(this)">
+                <div class="cb"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <p style="font-size:13px;font-weight:500;" class="txt-pri">Kangkong (1 bundle)</p>
+              </div>
+              <div class="grocery-row" onclick="toggleCheck(this)">
+                <div class="cb"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <p style="font-size:13px;font-weight:500;" class="txt-pri">Gabi (200g)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-bottom">
+          <div class="nav-float">
+            <div class="ni" onclick="go('s-dash')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 9l7-7 7 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke-width="1.5" stroke-linejoin="round" />
+              </svg><span class="ni-lbl">Home</span></div>
+            <div class="ni" onclick="go('s-meals')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke-width="1.5" />
+                <path d="M7 10h6M10 7v6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Meals</span></div>
+            <div class="ni active" onclick="go('s-grocery')"><svg width="20" height="20" viewBox="0 0 20 20"
+                fill="none">
+                <path d="M4 4h2l2.5 9h7l2-6H7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9" cy="16" r="1" stroke-width="1.5" />
+                <circle cx="14" cy="16" r="1" stroke-width="1.5" />
+              </svg><span class="ni-lbl">Grocery</span></div>
+            <div class="ni" onclick="go('s-profile')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="3" stroke-width="1.5" />
+                <path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="s-profile" class="screen">
+        <div class="sbar" id="sb4"><span>9:41</span><span style="letter-spacing:1px;">|||</span></div>
+        <div class="top-header">
+          <p style="font-size:17px;font-weight:700;" class="txt-pri">Profile</p>
+        </div>
+        <div class="content">
+
+          <div
+            style="margin-top:10px;padding:16px;background:linear-gradient(135deg,rgba(92,107,192,0.15),rgba(76,175,80,0.1));border-radius:20px;border:1px solid rgba(92,107,192,0.2);margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+              <div
+                style="width:36px;height:36px;background:#5C6BC0;border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px var(--indigo-glow);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                  <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <p style="font-size:14px;font-weight:700;" class="txt-pri">Weekly Check-in</p>
+                <p style="font-size:12px;" class="txt-sec">AI Plan Adaptation</p>
+              </div>
+            </div>
+            <p style="font-size:13px;line-height:1.5;margin-bottom:12px;" class="txt-pri">It's time to log your weekly
+              weight! We'll track your progress and adjust your upcoming meal plan to ensure you hit your goals.</p>
+            <button
+              style="width:100%;padding:10px;border-radius:12px;background:#5C6BC0;color:#fff;border:none;font-weight:700;font-size:13px;cursor:pointer;">Log
+              Weight & Review Plan</button>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+            <div
+              style="width:80px;height:80px;border-radius:50%;background:rgba(76,175,80,0.15);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#4CAF50;margin-bottom:12px;border:2px solid rgba(76,175,80,0.3);">
+              CP</div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;" class="txt-pri">Chimairel Pacaldo</h2>
+            <p style="font-size:13px;" class="txt-sec">chimairel@example.com</p>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <p style="font-size:11px;font-weight:700;letter-spacing:0.5px;" class="txt-hint">YOUR STATS</p>
+              <span onclick="openModal()"
+                style="font-size:11px;color:#4CAF50;font-weight:600;cursor:pointer;padding:4px 8px;background:rgba(76,175,80,0.1);border-radius:6px;">Edit</span>
+            </div>
+            <div style="display:flex;justify-content:space-around;text-align:center;">
+              <div>
+                <p style="font-size:18px;font-weight:700;margin-bottom:2px;" class="txt-pri">68<span
+                    style="font-size:12px;font-weight:500;" class="txt-sec">kg</span></p>
+                <p style="font-size:11px;" class="txt-hint">Weight</p>
+              </div>
+              <div>
+                <p style="font-size:18px;font-weight:700;margin-bottom:2px;" class="txt-pri">170<span
+                    style="font-size:12px;font-weight:500;" class="txt-sec">cm</span></p>
+                <p style="font-size:11px;" class="txt-hint">Height</p>
+              </div>
+              <div>
+                <p style="font-size:18px;font-weight:700;margin-bottom:2px;" class="txt-pri">24</p>
+                <p style="font-size:11px;" class="txt-hint">Age</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <p style="font-size:11px;font-weight:700;letter-spacing:0.5px;" class="txt-hint">DIETARY GOALS</p>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <p style="font-size:13px;font-weight:600;" class="txt-pri">Primary Goal</p>
+              <span class="badge badge-fil"
+                onclick="this.textContent = this.textContent.includes('Lose weight') ? 'Build muscle ▾' : 'Lose weight ▾'; this.className = this.textContent.includes('Build') ? 'badge badge-ai' : 'badge badge-fil';"
+                style="cursor:pointer;">Lose weight ▾</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <p style="font-size:13px;font-weight:600;" class="txt-pri">Activity Level</p>
+              <span class="badge badge-ai"
+                onclick="this.textContent = this.textContent.includes('Sedentary') ? 'Very Active ▾' : 'Sedentary ▾'; this.className = this.textContent.includes('Active') ? 'badge badge-fil' : 'badge badge-ai';"
+                style="cursor:pointer;">Sedentary ▾</span>
+            </div>
+          </div>
+
+          <div class="bento bento-sm" style="margin-bottom:20px;">
+            <p style="font-size:11px;font-weight:700;margin-bottom:14px;letter-spacing:0.5px;" class="txt-hint">APP
+              SETTINGS</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <p style="font-size:13px;font-weight:600;" class="txt-pri">Dark Mode</p>
+              <div class="toggle-wrap" onclick="toggleTheme()">
+                <div class="toggle-track on" id="tog3-track">
+                  <div class="toggle-thumb on" id="tog3-thumb"></div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <p style="font-size:13px;font-weight:600;" class="txt-pri">Meal Reminders</p>
+              <div class="toggle-wrap">
+                <div class="toggle-track on" style="background:#4CAF50;">
+                  <div class="toggle-thumb on" style="background:#fff;transform:translateX(20px);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="openBotDrawer('profile')"
+            style="width:100%;padding:13px;border-radius:14px;background:#4CAF50;color:#fff;border:1.5px solid transparent;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;margin-bottom:12px;">Save
+            Profile Settings</button>
+          <button onclick="go('s-landing')"
+            style="width:100%;padding:13px;border-radius:14px;background:rgba(239,83,80,0.1);color:#EF5350;border:1.5px solid transparent;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;">Log
+            Out</button>
+        </div>
+
+        <div class="nav-bottom">
+          <div class="nav-float">
+            <div class="ni" onclick="go('s-dash')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M3 9l7-7 7 7v9a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke-width="1.5" stroke-linejoin="round" />
+              </svg><span class="ni-lbl">Home</span></div>
+            <div class="ni" onclick="go('s-meals')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke-width="1.5" />
+                <path d="M7 10h6M10 7v6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Meals</span></div>
+            <div class="ni" onclick="go('s-grocery')"><svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 4h2l2.5 9h7l2-6H7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9" cy="16" r="1" stroke-width="1.5" />
+                <circle cx="14" cy="16" r="1" stroke-width="1.5" />
+              </svg><span class="ni-lbl">Grocery</span></div>
+            <div class="ni active" onclick="go('s-profile')"><svg width="20" height="20" viewBox="0 0 20 20"
+                fill="none">
+                <circle cx="10" cy="7" r="3" stroke-width="1.5" />
+                <path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke-width="1.5" stroke-linecap="round" />
+              </svg><span class="ni-lbl">Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var isDark = true;
+
+  function applyTheme(dark) {
+    var app = document.getElementById('app');
+    var phone = document.getElementById('phone');
+    app.className = dark ? 'app dark' : 'app light';
+
+    var tracks = [document.getElementById('tog-track'), document.getElementById('tog2-track'), document.getElementById('tog3-track')];
+    var thumbs = [document.getElementById('tog-thumb'), document.getElementById('tog2-thumb'), document.getElementById('tog3-thumb')];
+    tracks.forEach(function (t) { if (t) { t.className = dark ? 'toggle-track on' : 'toggle-track'; } });
+    thumbs.forEach(function (t) { if (t) { t.className = dark ? 'toggle-thumb on' : 'toggle-thumb'; } });
+
+    var lbl = document.getElementById('theme-lbl');
+    if (lbl) lbl.textContent = dark ? 'Dark mode' : 'Light mode';
+
+    var sb = document.querySelectorAll('.search-bar');
+    sb.forEach(function (el) {
+      el.style.background = dark ? '#1F1F23' : '#F3F4F6';
+      el.style.borderColor = dark ? '#2A2A2E' : '#E5E7EB';
+    });
+    var si = document.getElementById('search-in');
+    if (si) si.style.color = dark ? '#F3F4F6' : '#111827';
+  }
+
+  function toggleTheme() {
+    isDark = !isDark;
+    applyTheme(isDark);
+  }
+
+  function getRecipe(mealName) {
+    if (mealName.includes('Breakfast')) {
+      return {
+        ing: ['1 cup day-old rice', '3 cloves garlic, minced', '150g Pork Tocino', '1 large Egg', '1 tbsp cooking oil'],
+        steps: ['Fry Tocino in a pan until caramelized and cooked through.', 'In the same pan, sauté garlic until golden brown.', 'Toss in the rice and stir-fry until well-coated with garlic oil.', 'Fry the egg sunny-side up and serve it on top of the rice and tocino.']
+      };
+    } else if (mealName.includes('Lunch')) {
+      return {
+        ing: ['200g Pork belly, sliced', '1 cup steamed rice', 'Tamarind soup base mix', '1 small radish, sliced', 'Handful of string beans (sitaw)', '1 tomato, quartered', '1 onion, sliced'],
+        steps: ['Boil pork with onions and tomatoes until tender.', 'Stir in the tamarind base mix.', 'Add the radish and string beans; simmer for 5 minutes.', 'Serve hot in a bowl with a side of steamed rice.']
+      };
+    } else if (mealName.includes('Dinner')) {
+      return {
+        ing: ['200g Chicken thighs', '1 cup steamed rice', '4 tbsp soy sauce', '2 tbsp vinegar', '3 cloves garlic, crushed', '1 tsp peppercorns', '2 bay leaves'],
+        steps: ['Marinate chicken in soy sauce, garlic, and vinegar for 20 minutes.', 'Sear chicken in a pan until browned.', 'Pour in the marinade, add peppercorns and bay leaves.', 'Simmer until sauce thickens. Serve hot with rice.']
+      };
+    }
+    return null;
+  }
+
+  function openMealDetail(meal, food, kcal, status) {
+    var isDone = status === 'done';
+    var isExtra = status === 'extra';
+    var content = '';
+    var recipe = getRecipe(meal);
+
+    var recipeHtml = '';
+    if (recipe) {
+      recipeHtml = '<div style="margin-top:20px;padding-top:16px;border-top:1.5px dashed rgba(156,163,175,0.2);">' +
+        '<p style="font-size:14px;font-weight:700;margin-bottom:12px;" class="txt-pri">Ingredients</p>' +
+        '<ul style="margin:0;padding-left:20px;margin-bottom:16px;">' +
+        recipe.ing.map(function (i) { return '<li style="font-size:13px;margin-bottom:6px;" class="txt-sec">' + i + '</li>'; }).join('') +
+        '</ul>' +
+        '<p style="font-size:14px;font-weight:700;margin-bottom:12px;" class="txt-pri">Recipe Instructions</p>' +
+        '<ol style="margin:0;padding-left:20px;margin-bottom:10px;">' +
+        recipe.steps.map(function (s) { return '<li style="font-size:13px;margin-bottom:10px;line-height:1.4;" class="txt-sec">' + s + '</li>'; }).join('') +
+        '</ol>' +
+        '</div>';
+    }
+
+    if (isExtra) {
+      content = '<div style="margin-bottom:16px;">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+        '<p style="font-size:16px;font-weight:700;" class="txt-pri">' + meal + '</p>' +
+        '<span style="font-size:10px;font-weight:700;color:#9C6BC0;background:rgba(156,107,192,0.15);padding:3px 8px;border-radius:8px;">Unplanned</span>' +
+        '</div>' +
+        '<p style="font-size:13px;margin-bottom:12px;" class="txt-sec">' + food + ' \u00b7 ' + kcal + ' kcal</p>' +
+        '<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:14px;">' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(239,83,80,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#EF5350;">22g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#EF5350;">Protein</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(255,167,38,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#FFA726;">58g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#FFA726;">Carbs</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(38,198,218,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#26C6DA;">14g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#26C6DA;">Fats</p>' +
+        '</div>' +
+        '</div>' +
+        '<div style="padding:10px 14px;border-radius:12px;background:rgba(156,107,192,0.08);display:flex;align-items:center;gap:8px;margin-bottom:12px;">' +
+        '<span style="font-size:18px;">\u2139\ufe0f</span>' +
+        '<p style="font-size:13px;font-weight:600;color:#9C6BC0;">This was logged outside your meal plan and counted toward your daily total.</p>' +
+        '</div>' +
+        '<button onclick="closeMealDetail()" style="width:100%;padding:12px;border-radius:14px;background:rgba(239,83,80,0.08);color:#EF5350;border:1.5px solid transparent;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;">\u2715 Remove this Entry</button>' +
+        '</div>';
+
+    } else if (isDone) {
+      content = '<div style="margin-bottom:16px;">' +
+        '<p style="font-size:16px;font-weight:700;margin-bottom:4px;" class="txt-pri">' + meal + '</p>' +
+        '<p style="font-size:13px;margin-bottom:12px;" class="txt-sec">' + food + ' \u00b7 ' + kcal + ' kcal</p>' +
+        '<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:14px;">' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(239,83,80,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#EF5350;">35g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#EF5350;">Protein</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(255,167,38,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#FFA726;">82g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#FFA726;">Carbs</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(38,198,218,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#26C6DA;">18g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#26C6DA;">Fats</p>' +
+        '</div>' +
+        '</div>' +
+        '<div style="padding:10px 14px;border-radius:12px;background:rgba(76,175,80,0.08);display:flex;align-items:center;gap:8px;margin-bottom:12px;">' +
+        '<span style="font-size:18px;">\u2705</span>' +
+        '<p style="font-size:13px;font-weight:600;color:#4CAF50;">This meal was logged and counted!</p>' +
+        '</div>' +
+        recipeHtml +
+        '</div>';
+    } else {
+      content = '<div style="margin-bottom:16px;">' +
+        '<p style="font-size:16px;font-weight:700;margin-bottom:4px;" class="txt-pri">' + meal + '</p>' +
+        '<p style="font-size:13px;margin-bottom:12px;" class="txt-sec">' + food + ' \u00b7 ' + kcal + ' kcal</p>' +
+        '<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:16px;">' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(239,83,80,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#EF5350;">35g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#EF5350;">Protein</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(255,167,38,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#FFA726;">28g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#FFA726;">Carbs</p>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center;padding:8px;border-radius:12px;background:rgba(38,198,218,0.08);">' +
+        '<p style="font-size:14px;font-weight:700;color:#26C6DA;">18g</p>' +
+        '<p style="font-size:10px;font-weight:600;color:#26C6DA;">Fats</p>' +
+        '</div>' +
+        '</div>' +
+        '<button onclick="closeMealDetail()" style="width:100%;padding:12px;border-radius:14px;background:#4CAF50;color:#fff;border:none;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;margin-bottom:8px;">Mark as Eaten \u2713</button>' +
+        '<button onclick="openBotDrawer(\'swap\');closeMealDetail();" style="width:100%;padding:12px;border-radius:14px;background:rgba(156,163,175,0.1);color:#9CA3AF;border:1.5px solid rgba(156,163,175,0.2);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;margin-bottom:8px;">\u27f2 Swap this Meal</button>' +
+        '<button onclick="closeMealDetail()" style="width:100%;padding:12px;border-radius:14px;background:rgba(239,83,80,0.08);color:#EF5350;border:1.5px solid transparent;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;margin-bottom:12px;">\u2715 Skip this Meal</button>' +
+        recipeHtml +
+        '</div>';
+    }
+
+    document.getElementById('meal-detail-content').innerHTML = content;
+    document.getElementById('meal-overlay').classList.add('active');
+    document.getElementById('meal-drawer').classList.add('active');
+  }
+
+  function closeMealDetail() {
+    document.getElementById('meal-overlay').classList.remove('active');
+    document.getElementById('meal-drawer').classList.remove('active');
+  }
+
+  function go(id) {
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+    var el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+
+  function selPill(el, grp) {
+    document.querySelectorAll('[data-grp="' + grp + '"]').forEach(function (p) { p.classList.remove('active'); });
+    el.classList.add('active');
+  }
+
+  function toggleCheck(row) {
+    var cb = row.querySelector('.cb');
+    var txt = row.querySelector('p');
+    var isChecked = cb.classList.contains('checked');
+    if (isChecked) {
+      cb.classList.remove('checked');
+      txt.style.textDecoration = 'none';
+      txt.className = 'txt-pri';
+      row.style.opacity = '1';
+    } else {
+      cb.classList.add('checked');
+      txt.style.textDecoration = 'line-through';
+      txt.className = 'txt-sec';
+      row.style.opacity = '0.5';
+    }
+  }
+
+  // Modal Functions
+  function openBotDrawer(mode) {
+    document.getElementById('bot-overlay').classList.add('active');
+    document.getElementById('bot-drawer').classList.add('active');
+
+    // Hide all chats first
+    document.getElementById('bot-chat-log').style.display = 'none';
+    document.getElementById('bot-chat-swap').style.display = 'none';
+    document.getElementById('bot-chat-genday').style.display = 'none';
+    document.getElementById('bot-chat-profile-step1').style.display = 'none';
+    document.getElementById('bot-chat-profile-step2').style.display = 'none';
+
+    // Show the requested chat
+    if (mode === 'swap') {
+      document.getElementById('bot-chat-swap').style.display = 'flex';
+    } else if (mode === 'genday') {
+      document.getElementById('bot-chat-genday').style.display = 'flex';
+    } else if (mode === 'profile') {
+      document.getElementById('bot-chat-profile-step1').style.display = 'flex';
+    } else {
+      document.getElementById('bot-chat-log').style.display = 'flex';
+    }
+  }
+
+  function closeBotDrawer() {
+    document.getElementById('bot-overlay').classList.remove('active');
+    document.getElementById('bot-drawer').classList.remove('active');
+  }
+
+  function openModal() {
+    document.getElementById('edit-modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('edit-modal').classList.remove('active');
+  }
+
+  function saveModal() {
+    // Add your logic to save the stats here later!
+    closeModal();
+  }
+
+  applyTheme(true);
+</script>
